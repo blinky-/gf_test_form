@@ -1,0 +1,34 @@
+.my-form-label {
+    width: 90px;
+}
+
+.my-selected-tariff {
+    font-weight: bold;
+    background-color: #dedeff!important;
+    border-color: #000000!important;
+    color: #001188 !important;
+}
+
+input.my-is-invalid {
+    background-color: #f99f9f!important;
+    border-color: #f99f9f!important;
+    color: #ff1111 !important;
+}
+
+.my-datepicker-wrapper {
+    border: 0!important;
+    margin: 0!important;
+    padding: 0!important;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.active, .open>.dropdown-toggle.btn-outline-primary {
+    color: #fff;
+    background-color: #dedeff!important;
+    border-color: #001188!important;
+}
+
+.btn-outline-primary:disabled {
+    background-color: #007bff!important;
+    color: #209dff;
+    border-color: #fff!important;
+}

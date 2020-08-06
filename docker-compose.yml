@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  fg-test_php-fpm:
+    container_name: fg-test_php-fpm
+    build: ./php-fpm
+    volumes:
+      - ./backend/:/var/www/backend/
+    depends_on:
+      - fg-test_pgsql
+
+  fg-test_nginx:
+    container_name: fg-test_nginx
+    image: nginx:latest
+    volumes: 
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/logs/:/var/log/nginx/
+      - ./frontend/:/var/www/frontend/
+      - ./backend/:/var/www/backend/
+    ports:
+      - 8000:8000
+      - 8001:8001
+    links:
+      - fg-test_php-fpm
+  
+  fg-test_pgsql:
+    container_name: fg-test_pgsql
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres

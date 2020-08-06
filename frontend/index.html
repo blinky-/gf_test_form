@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Оформление заказа</title>
+</head>
+<body>
+<div id="vue_root">
+
+<div class="container pt-4 pb-1">
+    <div class="d-flex flex-wrap justify-content-center">
+        <div class="pt-3 pb-3 pl-4 pr-4 btn border m-1 rounded bg-primary text-light"
+             v-for="t in tariffs"
+             :key="t.id"
+             @click="selectTariff(t)"
+             v-bind:class="{ 'my-selected-tariff': selectedTariff && t.id == selectedTariff.id }"
+        >
+            <div>{{ t.name }}</div>
+            <div class="text-right">{{ t.price }}₽</div>
+        </div>
+    </div>
+</div>
+<div class="container bg-primary p-3 text-light">
+    <div class="row m-2">
+        <div class="col">
+            <div v-if="selectedTariff">
+                <h1 class="font-weight-bold">{{ selectedTariff.name }}</h1>
+                <h5 class="font-italic font-weight-bold">Цена: {{ selectedTariff.price }}₽</h5>
+                <p>Доставка осуществляется по дням:</p>
+                <ul>
+                    <li v-for="d in selectedTariff.delivery_days" :key="d">{{ getWeekdayName(d) }}</li>
+                </ul>
+            </div>
+            <div v-else>
+                <h3 class="font-weight-bold">
+                    <span v-if="tariffs.length > 0">Выберите тариф</span>
+                    <span v-else>К сожалению, тарифы не доступны</span>
+                </h3>
+            </div>
+        </div>
+        <div class="col-7">
+            <div class="input-group mb-3" @click="isInvalid.phone = false">
+                <div class="input-group-prepend">
+                    <label for="phone" class="input-group-text my-form-label">Телефон:</label>
+                </div>
+                <input type="tel" class="form-control" id="phone" v-model="form.client.phone" v-bind:class="{ 'my-is-invalid': isInvalid.phone }">
+            </div>
+
+            <div class="input-group mb-3" @click="isInvalid.name = false">
+                <div class="input-group-prepend">
+                    <label for="name" class="input-group-text my-form-label">Имя:</label>
+                </div>
+                <input type="text" class="form-control" id="name" v-model="form.client.name" v-bind:class="{ 'my-is-invalid': isInvalid.name }">
+            </div>
+
+            <div class="input-group mb-3" @click="isInvalid.address = false">
+                <div class="input-group-prepend">
+                    <label for="street" class="input-group-text my-form-label">Адрес:</label>
+                </div>
+                <input type="text" class="form-control" placeholder="Улица" id="street" v-model="form.order.address.street" v-bind:class="{ 'my-is-invalid': isInvalid.address }">
+                <input type="text" class="form-control" placeholder="Дом" id="building" v-model="form.order.address.building" v-bind:class="{ 'my-is-invalid': isInvalid.address }">
+                <input type="text" class="form-control" placeholder="Квартира" id="apt" v-model="form.order.address.apt" v-bind:class="{ 'my-is-invalid': isInvalid.address }">
+            </div>
+
+            <div class="input-group mb-3" @click="isInvalid.date = false">
+                <div class="input-group-prepend">
+                    <label for="date" class="input-group-text my-form-label">Дата:</label>
+                </div>
+                <vuejs-datepicker
+                        :disabled-dates="disabledDates"
+                        :monday-first="true"
+                        wrapper-class="form-control my-datepicker-wrapper"
+                        input-class="form-control"
+                        id="date"
+                        v-model="form.order.date"
+                        v-bind:input-class="{ 'my-is-invalid': isInvalid.date, 'form-control': true }"
+                ></vuejs-datepicker>
+            </div>
+            <div class="row float-right">
+                <div v-if="showSuccessMsg" class="p-2 text-center">Ваш заказ оформлен успешно!</div>
+                <button
+                        type="button"
+                        class="btn btn-outline-primary btn-lg btn-light float-right"
+                        :disabled="!selectedTariff || isSubmitting"
+                        @click="submit"
+                >
+                    <span class="spinner-border" v-if="isSubmitting"></span>
+                    <span v-else>Оформить заказ</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script src="js/jquery-3.5.1.slim.min.js"></script>
+<script src="js/vuejs-datepicker"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/axios.min.js"></script>
+<script src="js/my.js"></script>
+</body>
+</html>
